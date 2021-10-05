@@ -7,7 +7,6 @@ import argparse
 from argparse import RawTextHelpFormatter
 from itertools import izip_longest
 from termcolor import colored
-from src.config import get_config
 from src.listener import Listener
 from src.db import SQLiteDatabase
 
