@@ -5,7 +5,7 @@ if __name__ == '__main__':
   db = SQLiteDatabase()
 
   db.query("DROP TABLE IF EXISTS songs;")
-  print colored('Dropped songs table',"red");
+  print (colored('Dropped songs table',"red"))
 
   db.query("""
     CREATE TABLE songs (
@@ -14,10 +14,10 @@ if __name__ == '__main__':
       filehash  TEXT
     );
   """)
-  print colored('Created songs table','green');
+  print (colored('Created songs table','green'))
 
   db.query("DROP TABLE IF EXISTS fingerprints;")
-  print colored('Removed fingerprints',"red");
+  print (colored('Removed fingerprints',"red"))
 
   db.query("""
     CREATE TABLE `fingerprints` (
@@ -27,6 +27,6 @@ if __name__ == '__main__':
       `offset`  INTEGER
     );
   """)
-  print colored('Created Fingerprints',"green");
+  print (colored('Created Fingerprints',"green"))
 
-  print colored('Done',"green");
+  print (colored('Done',"green"))

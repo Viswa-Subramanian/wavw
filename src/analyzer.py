@@ -13,7 +13,7 @@ DEFAULT_FS = 44100
 DEFAULT_WINDOW_SIZE = 4096
 DEFAULT_OVERLAP_RATIO = 0.5
 DEFAULT_FAN_VALUE = 15
-DEFAULT_AMP_MIN = 10
+DEFAULT_AMP_MIN = 20
 PEAK_NEIGHBORHOOD_SIZE = 20
 MIN_HASH_TIME_DELTA = 0
 MAX_HASH_TIME_DELTA = 200
@@ -63,6 +63,7 @@ def get_2D_peaks(arr2D, amp_min=DEFAULT_AMP_MIN):
     return zip(frequency_idx, time_idx)
 
 def generate_hashes(peaks, fan_value=DEFAULT_FAN_VALUE):
+    peaks = list(peaks)
     if PEAK_SORT:
       peaks.sort(key=itemgetter(1))
 
@@ -77,7 +78,13 @@ def generate_hashes(peaks, fan_value=DEFAULT_FAN_VALUE):
           t_delta = t2 - t1
           
           if t_delta >= MIN_HASH_TIME_DELTA and t_delta <= MAX_HASH_TIME_DELTA:
-            h = hashlib.sha1("%s|%s|%s" % (str(freq1), str(freq2), str(t_delta)))
+            #print(t_delta)
+            #print(freq2)
+            #print(freq1)
+            result = "{freq1}|{freq2}|{delta}".format(freq1=freq1, freq2=freq2, delta= t_delta)
+            #print(result.encode('utf-8'))
+            result = result.encode('utf-8')
+            h = hashlib.sha1(result)
             yield (h.hexdigest()[0:FINGERPRINT_REDUCTION], t1)
 
 def replaceZeroes(data):

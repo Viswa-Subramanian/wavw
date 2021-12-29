@@ -5,7 +5,7 @@ import src.analyzer as analyzer
 import argparse
 
 from argparse import RawTextHelpFormatter
-from itertools import izip_longest
+from itertools import zip_longest
 from termcolor import colored
 from src.listener import Listener
 from src.db import SQLiteDatabase
@@ -18,13 +18,13 @@ if __name__ == '__main__':
   args = parser.parse_args()
 
   if not args.seconds:
-    print colored("Warning: You don't set any second. It's 10 by default", "yellow")
+    print (colored("Warning: You don't set any second. It's 10 by default", "yellow"))
     args.seconds = "10"
 
   seconds = int(args.seconds)
 
   chunksize = 2**12
-  channels = 2
+  channels = 1
 
   record_forever = False
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
   while True:
     bufferSize = int(listener.rate / listener.chunksize * seconds)
-    print colored("Listening....","green")
+    print (colored("Listening....","green"))
 
     for i in range(0, bufferSize):
       nums = listener.process_recording()
@@ -45,17 +45,17 @@ if __name__ == '__main__':
 
   listener.stop_recording()
 
-  print colored('Okey, enough', attrs=['dark'])
+  print (colored('Okey, enough', attrs=['dark']))
 
   def grouper(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
     return (filter(None, values) for values
-            in izip_longest(fillvalue=fillvalue, *args))
+            in zip_longest(fillvalue=fillvalue, *args))
 
   data = listener.get_recorded_data()
 
   msg = 'Took %d samples'
-  print colored(msg, attrs=['dark']) % len(data[0])
+  print(colored(msg, attrs=['dark']) % len(data[0]))
 
   Fs = analyzer.DEFAULT_FS
   channel_amount = len(data)
@@ -79,19 +79,19 @@ if __name__ == '__main__':
         FROM fingerprints
         WHERE upper(hash) IN (%s)
       """
-      query = query % ', '.join('?' * len(split_values))
-
-      x = db.executeAll(query, split_values)
+      vals = list(split_values).copy()
+      length = len(vals)
+      query = query % ', '.join('?' * length)
+      x = db.executeAll(query, values=vals)
       matches_found = len(x)
-
       if matches_found > 0:
         msg = 'I found %d hash in db'
-        print colored(msg, 'green') % (
+        print (colored(msg, 'green') % (
           matches_found
-        )
+        ))
 
       for hash, sid, offset in x:
-        yield (sid, offset - mapper[hash])
+        yield (sid, mapper[hash])
 
   for channeln, channel in enumerate(data):
     matches.extend(find_matches(channel))
@@ -117,6 +117,7 @@ if __name__ == '__main__':
         largest = diff
         largest_count = diff_counter[diff][sid]
         song_id = sid
+    
 
     songM = db.get_song_by_id(song_id)
 
@@ -135,18 +136,19 @@ if __name__ == '__main__':
   total_matches_found = len(matches)
 
   if total_matches_found > 0:
+    
     msg = 'Totally found %d hash'
-    print colored(msg, 'green') % total_matches_found
+    print (colored(msg, 'green') % total_matches_found)
 
     song = align_matches(matches)
 
     msg = ' => song: %s (id=%d)\n'
     msg += '    offset: %d (%d secs)\n'
 
-    print colored(msg, 'green') % (
+    print (colored(msg, 'green') % (
       song['SONG_NAME'], song['SONG_ID'],
       song['OFFSET'], song['OFFSET_SECS']
-    )
+    ))
   else:
     msg = 'Not anything matching'
-    print colored(msg, 'red')
+    print (colored(msg, 'red'))
