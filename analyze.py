@@ -19,14 +19,14 @@ if __name__ == '__main__':
       song = db.get_song_by_filehash(audio['file_hash'])
       song_id = db.add_song(filename, audio['file_hash'])
 
-      print colored("Analyzing music: %s","green") % filename 
+      print (colored("Analyzing music: %s","green") % filename)
       
       if song:
         hash_count = db.get_song_hashes_count(song_id)
 
         if hash_count > 0:
           msg = 'Warning: This song has already exists (%d hashes), skip' % hash_count
-          print colored(msg, 'yellow')
+          print (colored(msg, 'yellow'))
 
           continue
 
@@ -38,9 +38,9 @@ if __name__ == '__main__':
         channel_hashes = set(channel_hashes)
 
         msg = 'Channel %d saved %d hashes'
-        print colored(msg, attrs=['dark']) % (
+        print (colored(msg, attrs=['dark']) % (
            channeln, len(channel_hashes)
-        )
+        ))
 
         hashes |= channel_hashes
 
@@ -50,4 +50,4 @@ if __name__ == '__main__':
 
       db.store_fingerprints(values)
 
-  print colored('Done',"green")
+  print (colored('Done',"green"))
