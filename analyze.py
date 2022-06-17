@@ -6,7 +6,7 @@ from src.filereader import FileReader
 from termcolor import colored
 from src.db import SQLiteDatabase
 
-MUSICS_FOLDER_PATH = "mp3/"
+MUSICS_FOLDER_PATH = "musicSamples/"
 
 if __name__ == '__main__':
   db = SQLiteDatabase()
@@ -25,7 +25,7 @@ if __name__ == '__main__':
         hash_count = db.get_song_hashes_count(song_id)
 
         if hash_count > 0:
-          msg = 'Warning: This song has already exists (%d hashes), skip' % hash_count
+          msg = 'Warning: This song has already exists (%d hashes), skipping' % hash_count
           print (colored(msg, 'yellow'))
 
           continue
@@ -51,3 +51,4 @@ if __name__ == '__main__':
       db.store_fingerprints(values)
 
   print (colored('Done',"green"))
+

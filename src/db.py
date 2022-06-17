@@ -6,7 +6,7 @@ from termcolor import colored
 class SQLiteDatabase():
   TABLE_SONGS = 'songs'
   TABLE_FINGERPRINTS = 'fingerprints'
-  DB_FILE_NAME = 'db/shazam_demo.db'
+  DB_FILE_NAME = 'db/wavw.db'
 
   def __init__(self):
     self.connect()

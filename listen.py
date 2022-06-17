@@ -18,7 +18,7 @@ if __name__ == '__main__':
   args = parser.parse_args()
 
   if not args.seconds:
-    print (colored("Warning: You don't set any second. It's 10 by default", "yellow"))
+    print (colored("Warning: time not set, defaulted to 10", "yellow"))
     args.seconds = "10"
 
   seconds = int(args.seconds)
@@ -30,9 +30,7 @@ if __name__ == '__main__':
 
   listener = Listener()
 
-  listener.start_recording(seconds=seconds,
-    chunksize=chunksize,
-    channels=channels)
+  listener.start_recording(seconds=seconds,chunksize=chunksize,channels=channels)
 
   while True:
     bufferSize = int(listener.rate / listener.chunksize * seconds)
@@ -45,7 +43,7 @@ if __name__ == '__main__':
 
   listener.stop_recording()
 
-  print (colored('Okey, enough', attrs=['dark']))
+  print (colored('Processing....', attrs=['dark']))
 
   def grouper(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
@@ -85,7 +83,7 @@ if __name__ == '__main__':
       x = db.executeAll(query, values=vals)
       matches_found = len(x)
       if matches_found > 0:
-        msg = 'I found %d hash in db'
+        msg = 'Found %d hash in db'
         print (colored(msg, 'green') % (
           matches_found
         ))
@@ -137,7 +135,7 @@ if __name__ == '__main__':
 
   if total_matches_found > 0:
     
-    msg = 'Totally found %d hash'
+    msg = 'Found %d hash in total'
     print (colored(msg, 'green') % total_matches_found)
 
     song = align_matches(matches)
@@ -150,5 +148,5 @@ if __name__ == '__main__':
       song['OFFSET'], song['OFFSET_SECS']
     ))
   else:
-    msg = 'Not anything matching'
+    msg = 'No match found'
     print (colored(msg, 'red'))
